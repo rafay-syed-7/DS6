@@ -1,7 +1,7 @@
 const durationInput = document.getElementById("duration");
 const display       = document.getElementById("timer");
 const startBtn      = document.getElementById("start");
-const stopBtn       = document.getElementById("stop");
+// const stopBtn       = document.getElementById("stop");
 const resetBtn      = document.getElementById("reset");
 
 let uiInterval = null;
@@ -31,7 +31,7 @@ function render(state) {
 
   // control enabling/disabling
   startBtn.disabled = running;                            // only disable if already running
-  stopBtn.disabled  = !running;
+  // stopBtn.disabled  = !running;
   resetBtn.disabled = running || remaining === initialDuration;
 
   durationInput.disabled = running;
@@ -63,10 +63,10 @@ startBtn.addEventListener("click", () => {
   });
 });
 
-// Stop & Reset as before
-stopBtn.addEventListener("click", () => {
-  chrome.runtime.sendMessage({ action: "stop" }, fetchState);
-});
+// // Stop & Reset as before
+// stopBtn.addEventListener("click", () => {
+//   chrome.runtime.sendMessage({ action: "stop" }, fetchState);
+// });
 resetBtn.addEventListener("click", () => {
   chrome.runtime.sendMessage({ action: "reset" }, fetchState);
 });
