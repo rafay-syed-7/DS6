@@ -32,7 +32,7 @@ function render(state) {
   // control enabling/disabling
   startBtn.disabled = running;                            // only disable if already running
   // stopBtn.disabled  = !running;
-  resetBtn.disabled = running || remaining === initialDuration;
+  resetBtn.disabled = !running //|| remaining === initialDuration;
 
   durationInput.disabled = running;
 
