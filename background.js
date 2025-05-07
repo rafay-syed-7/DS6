@@ -94,3 +94,13 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   });
   return false;
 });
+
+
+
+chrome.tabs.onActivated.addListener(activeInfo => {
+  if (!state.running)
+    return;
+  chrome.action.openPopup().catch(err => {
+    console.warn("Could not open popup:", err);
+  });
+});
