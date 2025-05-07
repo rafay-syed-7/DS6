@@ -1,17 +1,20 @@
-const durationInput = document.getElementById("duration");
-const display       = document.getElementById("timer");
-const startBtn      = document.getElementById("start");
-// const stopBtn       = document.getElementById("stop");
-const resetBtn      = document.getElementById("reset");
+//const durationInput = document.getElementById("duration");
+
+const HoursInput = document.getElementById("hours");
+const MinutesInput = document.getElementById("minutes");
+const SecondsInput = document.getElementById("seconds");
+
+const display = document.getElementById("timer");
+const startBtn = document.getElementById("start");
+// const stopBtn = document.getElementById("stop");
+const resetBtn = document.getElementById("reset");
 
 let uiInterval = null;
 
-function parseHHMMSS(str) {
-  const parts = str.split(":").map(Number);
-  if (parts.length !== 3 || parts.some(isNaN)) return 0;
-  const [h, m, s] = parts;
+function combineFields(h, m, s) {
   return (h*3600 + m*60 + s) * 1000;
 }
+
 
 function formatTime(ms) {
   const totalSec = Math.floor(ms/1000);
@@ -30,11 +33,13 @@ function render(state) {
   display.textContent = formatTime(remaining);
 
   // control enabling/disabling
-  startBtn.disabled = running;                            // only disable if already running
+  startBtn.disabled = running; // only disable if already running
   // stopBtn.disabled  = !running;
   resetBtn.disabled = !running 
 
-  durationInput.disabled = running;
+  HoursInput.disabled = running;
+  MinutesInput.disabled = running;
+  SecondsInput.disabled = running;
 
   // keep ticking if running
   if (running && !uiInterval) {
@@ -53,7 +58,12 @@ function fetchState() {
 
 // Start: validate input first, then send setDuration + start
 startBtn.addEventListener("click", () => {
-  const ms = parseHHMMSS(durationInput.value);
+
+  const hours = parseInt(HoursInput.value) || 0;
+  const minutes = parseInt(MinutesInput.value) || 0;
+  const seconds = parseInt(SecondsInput.value) || 0;
+
+  const ms = combineFields(hours, minutes, seconds);
   if (ms <= 0) {
     alert("Please enter a valid time (HH:MM:SS) greater than 00:00:00.");
     return;
