@@ -7,8 +7,16 @@
   <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
-  <input id="duration" type="text" value="00:00:03" />
-  <div id="timer">00:00:00</div>
+  
+  <input class = "timerBox" id="hours" type="number" max = "99"/>
+  <input class = "timerBox" id="minutes" type="number" max = "59"/>
+  <input class = "timerBox" id="seconds" type="number" max = "59"/>
+  
+  <div id="timer"> 
+    <div id = "hr"> 00 </div>
+    <div id = "min"> 00 </div>
+    <div id = "sec"> 00 </div>
+  </div>
   <div id="controls">
     <button id="start">Start</button>
     <!-- <button id="stop" disabled>Stop</button> -->
