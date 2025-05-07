@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "name": "Simple Timer",
+    "description": "A stopwatch timer that runs in the background.",
+    "version": "1.0",
+    "permissions": ["storage"],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "icons/icon16.png"
+      }
+    }
+  }
+  

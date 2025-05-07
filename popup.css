@@ -1,0 +1,31 @@
+body {
+    width: 200px;
+    margin: 0;
+    padding: 10px;
+    font-family: Arial, sans-serif;
+  }
+  
+  #duration {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1em;
+    padding: 4px;
+    margin-bottom: 8px;
+  }
+  
+  #timer {
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  #controls {
+    text-align: center;
+  }
+  
+  button {
+    margin: 0 4px;
+    padding: 6px 12px;
+    font-size: 0.9em;
+  }
+  
