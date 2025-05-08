@@ -81,4 +81,15 @@ resetBtn.addEventListener("click", () => {
   chrome.runtime.sendMessage({ action: "reset" }, fetchState);
 });
 
-document.addEventListener("DOMContentLoaded", fetchState);
+document.addEventListener("DOMContentLoaded", () => {
+  fetchState();
+
+  chrome.storage.local.get('showQuote', ({ showQuote }) => {
+    if (showQuote && typeof getRandomQuote === "function") {
+      document.getElementById('quotes').textContent = getRandomQuote();
+    }
+
+    //resets quote flag
+    chrome.storage.local.set({ showQuote: false });
+  });
+});
