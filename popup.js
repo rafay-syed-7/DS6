@@ -14,6 +14,12 @@ const alarmSound = document.getElementById("alarmSound");
 let prevRemaining = null;
 let uiInterval = null;
 
+let alarmPlayed = false;
+chrome.storage.local.get({ alarmPlayed: false }, ({ alarmPlayed: stored }) => {
+  alarmPlayed = stored;
+});
+
+
 function combineFields(h, m, s) {
   return (h*3600 + m*60 + s) * 1000;
 }
@@ -46,7 +52,11 @@ function render(state) {
 
   //play sound when time runs out 
   if (prevRemaining > 0 && remaining == 0) {
-    alarmSound.play().catch(console.warn);
+    if (!alarmPlayed) {
+      alarmSound.play();
+      alarmPlayed = true;
+      chrome.storage.local.set({ alarmPlayed: true });
+    }
   }
   //store for next tick
   prevRemaining = remaining;
@@ -85,7 +95,11 @@ function fetchState() {
         alarmTriggeredAt &&
         alarmTriggeredAt !== lastAcknowledged
       ) {
-        alarmSound.play().catch(console.warn);
+        if (!alarmPlayed) {
+          alarmSound.play();
+          alarmPlayed = true;
+          chrome.storage.local.set({ alarmPlayed: true });
+        }
 
         // mark it acknowledged (don’t remove it)
         chrome.storage.local.set(
@@ -112,15 +126,11 @@ function fetchState() {
 
 
 
-
-
-
-
 // Start: validate input first, then send setDuration + start
 startBtn.addEventListener("click", () => {
   //reset tracker
   prevRemaining = null;
-
+  chrome.storage.local.set({ alarmPlayed: false });
   const hours = parseInt(HoursInput.value) || 0;
   const minutes = parseInt(MinutesInput.value) || 0;
   const seconds = parseInt(SecondsInput.value) || 0;
@@ -142,6 +152,7 @@ startBtn.addEventListener("click", () => {
 resetBtn.addEventListener("click", () => {
   //clear tracker on reset
   prevRemaining = null;
+  chrome.storage.local.set({ alarmPlayed: false });
   chrome.runtime.sendMessage({ action: "reset" }, fetchState);
 });
 
