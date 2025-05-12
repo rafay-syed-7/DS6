@@ -143,6 +143,9 @@ startBtn.addEventListener("click", () => {
   chrome.runtime.sendMessage({ action: "setDuration", duration: ms }, () => {
     chrome.runtime.sendMessage({ action: "start" }, fetchState);
   });
+
+  //Change 'Welcome' message to a quote
+  document.getElementById('intro').textContent = getRandomQuote();
 });
 
 // // Stop & Reset as before
