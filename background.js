@@ -51,6 +51,9 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
         state.endTime = now + state.remaining;
         state.running = true;
         saveState();
+
+        //schedule expiration alarm
+        chrome.alarms.create("timerExpired", { when: state.endTime });
       }
       break;
 
@@ -60,6 +63,9 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
         state.running   = false;
         state.endTime   = null;
         saveState();
+
+        //clears alarms 
+        chrome.alarms.clear("timerExpired");
       }
       break;
 
@@ -68,6 +74,9 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
       state.running   = false;
       state.endTime   = null;
       saveState();
+
+      //clears alarms 
+      chrome.alarms.clear("timerExpired");
       break;
 
     case "getState":
@@ -107,4 +116,17 @@ chrome.tabs.onActivated.addListener(activeInfo => {
       console.warn("Could not open popup:", err)
     );
   });
+});
+
+//opens up popup.html even if its closed
+chrome.alarms.onAlarm.addListener(alarm => {
+  if (alarm.name === "timerExpired") {
+    const ts = Date.now();
+    chrome.storage.local.set({ alarmTriggeredAt: ts }, () => {
+      chrome.action.openPopup().catch(console.warn);
+    });
+
+    //clear alarm
+    chrome.alarms.clear("timerExpired");
+  }
 });

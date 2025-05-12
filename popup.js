@@ -9,6 +9,9 @@ const startBtn = document.getElementById("start");
 // const stopBtn = document.getElementById("stop");
 const resetBtn = document.getElementById("reset");
 
+//alarm sound
+const alarmSound = document.getElementById("alarmSound");
+let prevRemaining = null;
 let uiInterval = null;
 
 function combineFields(h, m, s) {
@@ -41,6 +44,13 @@ function render(state) {
   MinutesInput.disabled = running;
   SecondsInput.disabled = running;
 
+  //play sound when time runs out 
+  if (prevRemaining > 0 && remaining == 0) {
+    alarmSound.play().catch(console.warn);
+  }
+  //store for next tick
+  prevRemaining = remaining;
+
   // keep ticking if running
   if (running && !uiInterval) {
     uiInterval = setInterval(() => {
@@ -50,14 +60,66 @@ function render(state) {
     clearInterval(uiInterval);
     uiInterval = null;
   }
+  
 }
 
+// function fetchState() {
+//   chrome.runtime.sendMessage(
+//     { action: "getState" }, 
+//     state => {
+//       if (!state.running && state.remaining === 0 && state.initialDuration > 0) {
+//         alarmSound.play().catch(console.warn);
+//       }
+//       render(state);
+//     }
+//   );
+// }
+
 function fetchState() {
-  chrome.runtime.sendMessage({ action: "getState" }, render);
+  chrome.storage.local.get(
+    ["alarmTriggeredAt","lastAcknowledged"],
+    ({ alarmTriggeredAt, lastAcknowledged }) => {
+
+      //if new expiration not acknowledged
+      if (
+        alarmTriggeredAt &&
+        alarmTriggeredAt !== lastAcknowledged
+      ) {
+        alarmSound.play().catch(console.warn);
+
+        // mark it acknowledged (don’t remove it)
+        chrome.storage.local.set(
+          { lastAcknowledged: alarmTriggeredAt },
+          () => {
+            // update UI
+            chrome.runtime.sendMessage(
+              { action: "getState" },
+              render
+            );
+          }
+        );
+        return;
+      }
+
+      //normal path
+      chrome.runtime.sendMessage(
+        { action: "getState" },
+        render
+      );
+    }
+  );
 }
+
+
+
+
+
+
 
 // Start: validate input first, then send setDuration + start
 startBtn.addEventListener("click", () => {
+  //reset tracker
+  prevRemaining = null;
 
   const hours = parseInt(HoursInput.value) || 0;
   const minutes = parseInt(MinutesInput.value) || 0;
@@ -78,10 +140,13 @@ startBtn.addEventListener("click", () => {
 //   chrome.runtime.sendMessage({ action: "stop" }, fetchState);
 // });
 resetBtn.addEventListener("click", () => {
+  //clear tracker on reset
+  prevRemaining = null;
   chrome.runtime.sendMessage({ action: "reset" }, fetchState);
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+  prevRemaining = null;
   fetchState();
 
   chrome.storage.local.get('showQuote', ({ showQuote }) => {

@@ -3,7 +3,7 @@
     "name": "Simple Timer",
     "description": "A stopwatch timer that runs in the background.",
     "version": "1.0",
-    "permissions": ["storage"],
+    "permissions": ["storage", "alarms"],
     "background": {
       "service_worker": "background.js"
     },
