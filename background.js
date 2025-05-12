@@ -109,7 +109,13 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
 chrome.tabs.onActivated.addListener(activeInfo => {
   if (!state.running)
     return;
-
+  chrome.action.openPopup()
+    .then(() => {
+      // tell popup “I opened you because of a tab switch”
+      chrome.runtime.sendMessage({ type: 'tabSwitch' });
+    })
+    .catch(err => console.warn("Could not open popup:", err));
+    
   //quote flag 
   chrome.storage.local.set({ showQuote: true }, () => {
     chrome.action.openPopup().catch(err =>

@@ -19,6 +19,16 @@ chrome.storage.local.get({ alarmPlayed: false }, ({ alarmPlayed: stored }) => {
   alarmPlayed = stored;
 });
 
+// whenever a tab-switch message arrives, clear the intro and show a quote:
+chrome.runtime.onMessage.addListener((msg, sender) => {
+  if (msg.type === 'tabSwitch') {
+    const intro = document.getElementById('intro');
+    if (intro && typeof getRandomQuote === 'function') {
+     intro.textContent = getRandomQuote();
+    }
+  }
+});
+
 
 function combineFields(h, m, s) {
   return (h*3600 + m*60 + s) * 1000;
@@ -162,6 +172,9 @@ resetBtn.addEventListener("click", () => {
 document.addEventListener("DOMContentLoaded", () => {
   prevRemaining = null;
   fetchState();
+
+  document.getElementById('intro').style.display = 'block';
+  document.getElementById('quotes').textContent = '';
 
   chrome.storage.local.get('showQuote', ({ showQuote }) => {
     if (showQuote && typeof getRandomQuote === "function") {
