@@ -8,15 +8,27 @@
 </head>
 <body>
   
-  <input class = "timerBox" id="hours" type="number" max = "99"/>
-  <input class = "timerBox" id="minutes" type="number" max = "59"/>
-  <input class = "timerBox" id="seconds" type="number" max = "59"/>
-  
-  <div id="timer"> 
-    <div id = "hr"> 00 </div>
-    <div id = "min"> 00 </div>
-    <div id = "sec"> 00 </div>
+  <div id="heading-div">
+    <h1 id="title">
+      <img src="https://images.vexels.com/media/users/3/132347/isolated/svg/be0aa6f53b4ac58a4a3612d6dc7a7854.svg" height="100%" width="100%">
+        Pulse
+    </h1>
+    <p id="intro">Welcome to Pulse — a simple, effective study timer designed to help you stay focused. Set your study duration, and Pulse will help keep you on track with gentle encouragement and alerts when you get distracted!</p>
   </div>
+
+  <div id="timer-div">
+    <div id="input-div">
+      <input class = "timerBox" id="hours" type="number" max = "99"/>
+      <input class = "timerBox" id="minutes" type="number" max = "59"/>
+      <input class = "timerBox" id="seconds" type="number" max = "59"/>
+    </div>
+    <div id="timer"> 
+      <div id = "hr"> 00 </div>
+      <div id = "min"> 00 </div>
+      <div id = "sec"> 00 </div>
+    </div>
+  </div>
+  
   <div id="controls">
     <button id="start">Start</button>
     <!-- <button id="stop" disabled>Stop</button> -->

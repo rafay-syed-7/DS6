@@ -1,9 +1,22 @@
+:root {
+  --primary-color: #faf7f7;
+  --secondary-color: #BEE3DB;
+  --tertiary-color: #89B0AE;
+  --dark-color: #434857;
+  --apricot-color: #FFD6BA;
+}
+
 body {
-    height: 400px;
+    height: 500px;
     width: 400px;
     margin: 0;
     padding: 10px;
     font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: linear-gradient(to bottom, #656b7c, var(--dark-color));
+    color: var(--primary-color);
   }
   
   .timerBox {
@@ -11,17 +24,20 @@ body {
     box-sizing: border-box;
     font-size: 1em;
     padding: 4px;
-    margin-bottom: 8px;
+    margin: 4px 4px;
+    font-size: 1.5rem;
   }
   
   #timer {
-    font-size: 2em;
+    font-size: 3em;
     text-align: center;
-    margin-bottom: 10px;
+    margin: 5px 0;
   }
   
   #controls {
     text-align: center;
+    margin-top: 10px;
+    font-size: 1.5em;
   }
   
   #quotes {
@@ -29,9 +45,69 @@ body {
     font-style: italic;
   }
   
-  button {
-    margin: 0 4px;
-    padding: 6px 12px;
-    font-size: 0.9em;
+  #input-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-  
+/* ----- Button Styling ------ */
+button {
+  font-size: 16px;
+  margin: auto;
+  padding: 0.5em 1.2em 0.5em 1.2em;
+  border: none;
+  background: #fff;
+  transition: all 0.1s linear;
+  box-shadow: 0 0.4em 1em rgba(0, 0, 0, 0.1);
+  border-radius: 2em;
+ }
+ 
+ button:active {
+  transform: scale(0.95);
+ }
+ 
+ button .border {
+  position: absolute;
+  border: 0.15em solid #fff;
+  transition: all 0.3s 0.08s linear;
+  top: 50%;
+  left: 50%;
+  width: 9em;
+  height: 3em;
+  transform: translate(-50%, -50%);
+ }
+/* ----------------------------------- */
+/* ----- Heading Styling ------ */
+  #heading-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: 60%;
+    width: 97%;
+    margin-top: 30px;
+  }
+
+  #title {
+    background-color: var(--tertiary-color);
+    border-radius: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20%;
+    width: 50%;
+    overflow: hidden;
+    padding: 12px 30px;
+    text-align: center;
+    font-size: 4rem;
+    margin: 0;
+  }
+
+  #intro {
+    background-color: var(--apricot-color);
+    color: var(--dark-color);
+    padding: 15px 7px;
+    font-size: 1.3rem;
+    border-radius: 2em;
+  }
+/* ----------------------------------- */
